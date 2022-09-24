@@ -20,6 +20,7 @@ module "aad-user" {
   username    = each.value
   password    = var.password
   domain_name = data.azuread_domains.aad_domains.domains[0].domain_name
+
 }
 
 resource "azurerm_role_definition" "support_dash_read" {

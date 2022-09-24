@@ -13,9 +13,15 @@ variable "password" {
   description = "Temporary password"
 }
 
+variable "department" {
+  type        = string
+  description = "IT" 
+  default     = "Cloud Administrator"
+}
+
 variable "job_title" {
   type        = string
-  description = "Temporary password"
+  description = "job_title"
   default     = "Cloud Administrator"
 
 }
