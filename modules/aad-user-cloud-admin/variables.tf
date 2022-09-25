@@ -15,8 +15,8 @@ variable "password" {
 
 variable "department" {
   type        = string
-  description = "IT" 
-  default     = "Cloud Administrator"
+  description = "department" 
+  default     = "IT"
 }
 
 variable "job_title" {
