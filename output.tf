@@ -6,7 +6,7 @@
  }
 
 output "list_details_of_AAD_identities" {
-    value = [for s in var.userlist : module.aad-user[s] ]
+    value = [for s in var.userlist : module.aad-user-cloud-admin[s] ]
 }
 
 
