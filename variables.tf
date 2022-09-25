@@ -1,4 +1,9 @@
-variable "userlist" {
+variable "userlist-cloudadmin" {
+  type    = list(string)
+  default = ["mac", "roy"]
+}
+
+variable "userlist-sysadmin" {
   type    = list(string)
   default = ["john", "nicolas"]
 }
