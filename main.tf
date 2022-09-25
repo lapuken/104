@@ -14,8 +14,8 @@ data "azuread_domains" "aad_domains" {
   only_default = true
 }
 
-module "aad-user" {
-  source      = "./modules/aad-user"
+module "aad-user-cloud-admin" {
+  source      = "./modules/aad-user-cloud-admin"
   for_each    = toset(var.userlist)
   username    = each.value
   password    = var.password
