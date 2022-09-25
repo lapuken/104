@@ -170,6 +170,7 @@ terraform.tfstate.backup
 .terraform
 .idea
 .git
+output.tf
 
 # JIRA plugin
 atlassian-ide-plugin.xml
