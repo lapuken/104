@@ -16,7 +16,16 @@ data "azuread_domains" "aad_domains" {
 
 module "aad-user-cloud-admin" {
   source      = "./modules/aad-user-cloud-admin"
-  for_each    = toset(var.userlist)
+  for_each    = toset(var.userlist-cloudadmin)
+  username    = each.value
+  password    = var.password
+  domain_name = data.azuread_domains.aad_domains.domains[0].domain_name
+
+}
+
+module "aad-user-sys-admin" {
+  source      = "./modules/aad-user-sys-admin"
+  for_each    = toset(var.userlist-sysadmin)
   username    = each.value
   password    = var.password
   domain_name = data.azuread_domains.aad_domains.domains[0].domain_name
