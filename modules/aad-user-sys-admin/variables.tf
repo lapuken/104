@@ -25,3 +25,10 @@ variable "job_title" {
   default     = "System Administrator"
 
 }
+
+variable "mail_nickname" {
+  type        = string
+  description = " mail_nickname"
+  default     = "kamela"
+
+}

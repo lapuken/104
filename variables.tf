@@ -1,6 +1,6 @@
 variable "userlist-cloudadmin" {
   type    = list(string)
-  default = ["mac", "roy"]
+  default = ["mac", "roy", "Arthur","anitta"]
 }
 
 variable "userlist-sysadmin" {

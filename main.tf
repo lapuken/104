@@ -1,36 +1,56 @@
 terraform {
-  required_version = ">=0.13"
+  required_version = ">=1.2.5"
 }
 
-provider "azuread" {
-  version = ">=0.11.0"
-}
+provider "azuread" {}
 
 provider "azurerm" {
    features {}
 }
 
+
 data "azuread_domains" "aad_domains" {
   only_default = true
 }
 
+resource "azuread_group" "AADG_Cloud_Admins" {
+  display_name = "Cloud_Admin Dptment"
+  security_enabled = true
+  }
 module "aad-user-cloud-admin" {
   source      = "./modules/aad-user-cloud-admin"
   for_each    = toset(var.userlist-cloudadmin)
   username    = each.value
   password    = var.password
   domain_name = data.azuread_domains.aad_domains.domains[0].domain_name
-
+}
+resource "azuread_group_member" "ADG_Cloud_Administrator" {  
+  for_each =   { for u in module.aad-user-cloud-admin : u.upn => u if u.job_title == "Cloud Administrator" }  
+  group_object_id  = azuread_group.AADG_Cloud_Admins.id
+  member_object_id = each.value.object_id  
 }
 
+resource "azuread_group" "AADG_Sys_Admins" {
+  display_name = "System_Admin Dptment"
+  security_enabled = true
+}
 module "aad-user-sys-admin" {
   source      = "./modules/aad-user-sys-admin"
   for_each    = toset(var.userlist-sysadmin)
   username    = each.value
   password    = var.password
   domain_name = data.azuread_domains.aad_domains.domains[0].domain_name
-
 }
+resource "azuread_group_member" "ADG_sys_Administrator" {  
+  for_each =   { for u in module.aad-user-sys-admin : u.upn => u if u.job_title == "System Administrator" }  
+  group_object_id  = azuread_group.AADG_Sys_Admins.id
+  member_object_id = each.value.object_id  
+}
+
+
+
+
+
 
 resource "azurerm_role_definition" "support_dash_read" {
   name        = "dashboard-${var.environment}-support"
@@ -55,6 +75,10 @@ resource "azurerm_resource_group" "example" {
   name     = "mygroup"
   location = "East US"
 }
+
+#data "azuread_client_config" "current" {}
+
+
 
 
 
