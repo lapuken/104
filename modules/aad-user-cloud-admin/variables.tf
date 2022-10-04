@@ -25,3 +25,14 @@ variable "job_title" {
   default     = "Cloud Administrator"
 
 }
+
+variable "mail_nickname" {
+  type        = string
+  description = " mail_nickname"
+  default     = "kamela_cloud"
+
+}
+
+
+
+
