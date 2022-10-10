@@ -8,7 +8,6 @@ provider "azurerm" {
    features {}
 }
 
-
 data "azuread_domains" "aad_domains" {
   only_default = true
 }
@@ -47,10 +46,29 @@ resource "azuread_group_member" "ADG_sys_Administrator" {
   member_object_id = each.value.object_id  
 }
 
+data "azurerm_subscription" "primary" {}
+data "azurerm_subscription" "current" {}
+data "azurerm_management_group" "example" {
+  display_name = "az104-02-mg1"
+}
 
+resource "azurerm_role_definition" "RoleDef_Support_Request" {
+  name        = "Support Request Contributor (Custom)"
+  scope       = data.azurerm_subscription.primary.id
+  description = "Allows to create support requests"
 
+  permissions {
+    actions     = [
+      "Microsoft.Resources/subscriptions/resourceGroups/read",
+       "Microsoft.Support/*"
+    ]
+    not_actions = []
+  }
 
-
+assignable_scopes = [
+    "${data.azurerm_subscription.primary.id}","${data.azurerm_management_group.example.id}"
+  ]
+}
 
 resource "azurerm_role_definition" "support_dash_read" {
   name        = "dashboard-${var.environment}-support"
@@ -69,18 +87,10 @@ resource "azurerm_role_definition" "support_dash_read" {
   ]
 }
 
-data "azurerm_subscription" "current" {}
-
 resource "azurerm_resource_group" "example" {
   name     = "mygroup"
   location = "East US"
 }
-
-#data "azuread_client_config" "current" {}
-
-
-
-
 
 resource "azurerm_dashboard" "insights-dashboard" {
   name                = "my-cool-dashboard"
