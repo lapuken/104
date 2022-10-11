@@ -171,6 +171,7 @@ terraform.tfstate.backup
 .idea
 .git
 output.tf
+remotestate-file 
 
 
 # JIRA plugin

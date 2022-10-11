@@ -2,11 +2,21 @@ terraform {
   required_version = ">=1.2.5"
 }
 
+terraform {
+  backend "azurerm" {
+    resource_group_name  = "tamopstfstates"
+    storage_account_name = "tamopstfkhido"
+    container_name       = "tfstatedevops"
+    key                  = "terraformgithubexample.tfstate"
+  }
+}
+
 provider "azuread" {}
 
 provider "azurerm" {
    features {}
 }
+
 
 data "azuread_domains" "aad_domains" {
   only_default = true
@@ -28,6 +38,8 @@ resource "azuread_group_member" "ADG_Cloud_Administrator" {
   group_object_id  = azuread_group.AADG_Cloud_Admins.id
   member_object_id = each.value.object_id  
 }
+
+
 
 resource "azuread_group" "AADG_Sys_Admins" {
   display_name = "System_Admin Dptment"
@@ -86,6 +98,7 @@ resource "azurerm_role_definition" "support_dash_read" {
     azurerm_dashboard.insights-dashboard.id,
   ]
 }
+
 
 resource "azurerm_resource_group" "example" {
   name     = "mygroup"
