@@ -21,9 +21,12 @@ output "display_name" {
   value = data.azurerm_management_group.example.display_name
 }
 
-output "role_definition" {
-     description = "Role Definition Support Request"
+output "role_definition_supportRequest" {
+    description = "Role Definition Support Request"
     value = azurerm_role_definition.RoleDef_Support_Request
 }
 
-
+output "role_assignment_supportRequest" {
+    description = "role_assignment_supportRequest"
+    value = azurerm_role_assignment.example
+}

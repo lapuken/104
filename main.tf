@@ -99,6 +99,12 @@ resource "azurerm_role_definition" "support_dash_read" {
   ]
 }
 
+resource "azurerm_role_assignment" "example" {
+  for_each =   { for u in module.aad-user-sys-admin : u.upn => u if u.job_title == "System Administrator" }  
+  scope              = data.azurerm_subscription.primary.id
+  principal_id  = each.value.object_id 
+  role_definition_name = azurerm_role_definition.RoleDef_Support_Request.name                      
+}
 
 resource "azurerm_resource_group" "example" {
   name     = "mygroup"
