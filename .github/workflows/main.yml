@@ -29,9 +29,6 @@ jobs:
     
     - name: 'Terraform Format'
       uses: hashicorp/terraform-github-actions@master
-<<<<<<< HEAD
-      with:  
-=======
       with:
         tf_actions_version: 0.14.8
         tf_actions_subcommand: 'fmt'
@@ -66,6 +63,5 @@ jobs:
         tf_actions_subcommand: 'apply'
         tf_actions_working_dir: "./terraform"
       
->>>>>>> e13398edf0a36e20c8b4aa7da6be0c8bd61c8db8
   
       
