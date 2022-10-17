@@ -106,6 +106,13 @@ resource "azurerm_role_assignment" "example" {
   role_definition_name = azurerm_role_definition.RoleDef_Support_Request.name                      
 }
 
+resource "azurerm_role_assignment" "example_cloud" {
+  for_each =   { for u in module.aad-user-cloud-admin : u.upn => u if u.job_title == "Cloud Administrator" }  
+  scope              = data.azurerm_subscription.primary.id
+  principal_id  = each.value.object_id 
+  role_definition_name = azurerm_role_definition.RoleDef_Support_Request.name                      
+}
+
 resource "azurerm_resource_group" "example" {
   name     = "mygroup"
   location = "East US"
