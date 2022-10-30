@@ -7,9 +7,10 @@ terraform {
     resource_group_name  = "tamopstfstates"
     storage_account_name = "tamopstfkhido"
     container_name       = "tfstatedevops"
-    #key                  = "terraformgithubexample.tfstate"
+    key                  = "terraformgithubexample.tfstate"
   }
 }
+
 
 provider "azuread" {}
 
