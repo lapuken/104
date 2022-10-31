@@ -119,6 +119,12 @@ resource "azurerm_resource_group" "example" {
   location = "East US"
 }
 
+resource "azurerm_resource_group" "example_delete" {
+  name     = "mygroup2"
+  location = "East US"
+}
+
+
 resource "azurerm_dashboard" "insights-dashboard" {
   name                = "my-cool-dashboard"
   resource_group_name = azurerm_resource_group.example.name
