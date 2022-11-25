@@ -1,5 +1,6 @@
 terraform {
-  required_version = ">=1.2.5"
+
+  required_version = ">= 1.3.0"
 }
 
 terraform {
@@ -8,6 +9,10 @@ terraform {
     storage_account_name = "tamopstfkhido"
     container_name       = "tfstatedevops"
     key                  = "terraformgithubexample.tfstate"
+    subscription_id      = "6d08912b-b049-4c6c-9a22-2b29298f7ebe"
+    tenant_id            = "2f25ed64-1a61-4526-9027-7cf25d62324c"
+    
+   
   }
 }
 
