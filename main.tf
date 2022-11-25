@@ -73,7 +73,7 @@ data "azurerm_management_group" "example" {
 resource "azurerm_role_definition" "RoleDef_Support_Request" {
   name        = "Support Request Contributor (Custom)"
   scope       = data.azurerm_subscription.primary.id
-  description = "Allows to create support requests"
+  description = "Allows to create support requests anytime"
 
   permissions {
     actions = [
