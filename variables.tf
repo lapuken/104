@@ -1,6 +1,6 @@
 variable "userlist-cloudadmin" {
   type    = list(string)
-  default = ["mac", "roy", "Arthur","anitta"]
+  default = ["mac", "roy", "Arthur", "anitta"]
 }
 
 variable "userlist-sysadmin" {
@@ -15,9 +15,9 @@ variable "password" {
 }
 
 variable "environment" {
-  type = string
+  type        = string
   description = "which environment?"
-  default = "DEV"
+  default     = "DEV"
 }
 
 variable "md_content" {

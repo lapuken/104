@@ -15,7 +15,7 @@ terraform {
 provider "azuread" {}
 
 provider "azurerm" {
-   features {}
+  features {}
 }
 
 
@@ -24,9 +24,9 @@ data "azuread_domains" "aad_domains" {
 }
 
 resource "azuread_group" "AADG_Cloud_Admins" {
-  display_name = "Cloud_Admin Dptment"
+  display_name     = "Cloud_Admin Dptment"
   security_enabled = true
-  }
+}
 module "aad-user-cloud-admin" {
   source      = "./modules/aad-user-cloud-admin"
   for_each    = toset(var.userlist-cloudadmin)
@@ -34,16 +34,16 @@ module "aad-user-cloud-admin" {
   password    = var.password
   domain_name = data.azuread_domains.aad_domains.domains[0].domain_name
 }
-resource "azuread_group_member" "ADG_Cloud_Administrator" {  
-  for_each =   { for u in module.aad-user-cloud-admin : u.upn => u if u.job_title == "Cloud Administrator" }  
+resource "azuread_group_member" "ADG_Cloud_Administrator" {
+  for_each         = { for u in module.aad-user-cloud-admin : u.upn => u if u.job_title == "Cloud Administrator" }
   group_object_id  = azuread_group.AADG_Cloud_Admins.id
-  member_object_id = each.value.object_id  
+  member_object_id = each.value.object_id
 }
 
 
 
 resource "azuread_group" "AADG_Sys_Admins" {
-  display_name = "System_Admin Dptment"
+  display_name     = "System_Admin Dptment"
   security_enabled = true
 }
 module "aad-user-sys-admin" {
@@ -53,10 +53,10 @@ module "aad-user-sys-admin" {
   password    = var.password
   domain_name = data.azuread_domains.aad_domains.domains[0].domain_name
 }
-resource "azuread_group_member" "ADG_sys_Administrator" {  
-  for_each =   { for u in module.aad-user-sys-admin : u.upn => u if u.job_title == "System Administrator" }  
+resource "azuread_group_member" "ADG_sys_Administrator" {
+  for_each         = { for u in module.aad-user-sys-admin : u.upn => u if u.job_title == "System Administrator" }
   group_object_id  = azuread_group.AADG_Sys_Admins.id
-  member_object_id = each.value.object_id  
+  member_object_id = each.value.object_id
 }
 
 data "azurerm_subscription" "primary" {}
@@ -71,15 +71,15 @@ resource "azurerm_role_definition" "RoleDef_Support_Request" {
   description = "Allows to create support requests"
 
   permissions {
-    actions     = [
+    actions = [
       "Microsoft.Resources/subscriptions/resourceGroups/read",
-       "Microsoft.Support/*"
+      "Microsoft.Support/*"
     ]
     not_actions = []
   }
 
-assignable_scopes = [
-    "${data.azurerm_subscription.primary.id}","${data.azurerm_management_group.example.id}"
+  assignable_scopes = [
+    "${data.azurerm_subscription.primary.id}", "${data.azurerm_management_group.example.id}"
   ]
 }
 
@@ -101,23 +101,24 @@ resource "azurerm_role_definition" "support_dash_read" {
 }
 
 resource "azurerm_role_assignment" "example" {
-  for_each =   { for u in module.aad-user-sys-admin : u.upn => u if u.job_title == "System Administrator" }  
-  scope              = data.azurerm_subscription.primary.id
-  principal_id  = each.value.object_id 
-  role_definition_name = azurerm_role_definition.RoleDef_Support_Request.name                      
+  for_each             = { for u in module.aad-user-sys-admin : u.upn => u if u.job_title == "System Administrator" }
+  scope                = data.azurerm_subscription.primary.id
+  principal_id         = each.value.object_id
+  role_definition_name = azurerm_role_definition.RoleDef_Support_Request.name
 }
 
 resource "azurerm_role_assignment" "example_cloud" {
-  for_each =   { for u in module.aad-user-cloud-admin : u.upn => u if u.job_title == "Cloud Administrator" }  
-  scope              = data.azurerm_subscription.primary.id
-  principal_id  = each.value.object_id 
-  role_definition_name = azurerm_role_definition.RoleDef_Support_Request.name                      
+  for_each             = { for u in module.aad-user-cloud-admin : u.upn => u if u.job_title == "Cloud Administrator" }
+  scope                = data.azurerm_subscription.primary.id
+  principal_id         = each.value.object_id
+  role_definition_name = azurerm_role_definition.RoleDef_Support_Request.name
 }
 
 resource "azurerm_resource_group" "example" {
   name     = "mygroup"
   location = "East US"
 }
+
 
 resource "azurerm_dashboard" "insights-dashboard" {
   name                = "my-cool-dashboard"
