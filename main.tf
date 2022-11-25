@@ -16,7 +16,7 @@ terraform {
   }
 }
 
-
+# this is pretty chaotic
 provider "azuread" {}
 
 provider "azurerm" {
