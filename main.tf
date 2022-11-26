@@ -29,7 +29,7 @@ data "azuread_domains" "aad_domains" {
 }
 
 resource "azuread_group" "AADG_Cloud_Admins" {
-  display_name     = "Cloud_Admin Dptment"
+  display_name     = "Cloud_Admin Dptment only"
   security_enabled = true
 }
 module "aad-user-cloud-admin" {
