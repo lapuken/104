@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Set Azure Resource Manager Endpoint
+      run: az account set --resource-manager-endpoint https://management.azure.com
+
     - name: Set up Terraform
       uses: actions/setup-terraform@v2
       with:
