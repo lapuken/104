@@ -19,3 +19,4 @@ jobs:
     - run: terraform init
     - run: terraform plan
     - run: terraform apply -auto-approve
+    - run: terraform init
