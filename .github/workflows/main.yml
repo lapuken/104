@@ -14,6 +14,7 @@ jobs:
       with:
         terraform_version: 1.3.0
     - run: az --version
+    - run: terraform --version
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
