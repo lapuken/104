@@ -12,7 +12,8 @@ jobs:
     steps:
     - name: Print secrets
       run: echo "${{ secrets.AZURE_CREDENTIALS }}"
-      
+
+
   terraform:
     runs-on: ubuntu-latest
     steps:
