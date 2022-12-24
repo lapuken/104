@@ -6,17 +6,25 @@ on:
       - main
 
 jobs:
+
+  print-secrets:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Print secrets
+      run: echo "${{ secrets.AZURE_CREDENTIALS }}"
+      
   terraform:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    
     - uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: 1.3.0
     - run: az --version
     - run: terraform --version
-    - run: az ad sp show --id messier18 --query "permissions"
-    - uses: azure/login@v1
+    
+    - uses: azure/login@v1 
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     - run: terraform init
