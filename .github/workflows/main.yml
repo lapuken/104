@@ -15,7 +15,7 @@ jobs:
         terraform_version: 1.3.0
     - run: az --version
     - run: terraform --version
-    - run: az account show
+    - run: az ad sp show --id messier18 --query "permissions"
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
