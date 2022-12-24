@@ -18,5 +18,6 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     - run: terraform init
     - run: terraform plan
+    - run: az --version
     - run: terraform apply -auto-approve
     - run: terraform init
