@@ -5,14 +5,26 @@ on:
     branches:
       - main
 
-jobs:
+jobs: 
+  talowa:
+    name: 'Terraform'
+    env:
+        ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v2
 
   print-secrets:
     runs-on: ubuntu-latest
     steps:
     - name: Print secrets
       run: echo "${{ secrets.AZURE_CREDENTIALS }}"
-
 
   terraform:
     runs-on: ubuntu-latest
