@@ -23,15 +23,20 @@ jobs:
         shell: bash
 
     steps:
-    #install az commandline and check version
-    - uses: Azure/CLI@v1
-    - run: az --version
-
-    # Checkout the repository to the GitHub Actions runner
+     # Checkout the repository to the GitHub Actions runner
  
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Azure CLI
+      uses: Azure/CLI@v1
+      with:
+
+        inlineScript: |
+          az login --service-principal -u $SERVICE_PRINCIPAL_ID -p $SERVICE_PRINCIPAL_SECRET --tenant $TENANT_ID
+          az account set --subscription $AZURE_SUBSCRIPTION_ID
+          az group create --name myResourceGroup --location eastus
+        
     - name: 'Terraform Init'
       uses: hashicorp/terraform-github-actions@master
       with:
