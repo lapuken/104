@@ -1,47 +1,64 @@
-name: Terraform
+name: 'Terraform'
 
-on:
+on :
   push:
     branches:
       - main
+  pull_request:
 
-jobs: 
-  talowa:
+jobs:
+  terraform:
     name: 'Terraform'
     env:
-        ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
-        ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
-        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+      ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+      RM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
     runs-on: ubuntu-latest
     environment: production
-    steps:
-      # Checkout the repository to the GitHub Actions runner
-      - name: Checkout
-        uses: actions/checkout@v2
 
-  print-secrets:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Print secrets
-      run: echo "${{ secrets.AZURE_CREDENTIALS }}"
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
 
-  terraform:
-    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    
-    - uses: hashicorp/setup-terraform@v1
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: 'Terraform Format'
+      uses: hashicorp/terraform-github-actions@master
       with:
-        terraform_version: 1.3.0
-    - run: az --version
-    - run: terraform --version
-    
-    - uses: azure/login@v1 
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-    - run: terraform init
-    - run: terraform plan
+        tf_actions_version: 1.3.0
+        tf_actions_subcommand: 'fmt'
+        tf_actions_working_dir: "./terraform"
 
-    - run: terraform apply -auto-approve
-    - run: terraform init
+    - name: 'Terraform Init'
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: 1.3.0
+        tf_actions_subcommand: 'init'
+        tf_actions_working_dir: "./terraform"
+    
+    - name: 'Terraform Validate'
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: 1.3.0
+        tf_actions_subcommand: 'validate'
+        tf_actions_working_dir: "./terraform"
+
+    - name: 'Terraform Plan'
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: 1.3.0
+        tf_actions_subcommand: 'plan'
+        tf_actions_working_dir: "./terraform"
+
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main'
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: 1.3.0
+        tf_actions_subcommand: 'apply'
+        tf_actions_working_dir: "./terraform"
