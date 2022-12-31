@@ -126,6 +126,7 @@ resource "azurerm_resource_group" "example" {
   location = "East US"
 }
 
+#The `azurerm_dashboard` resource is deprecated and will be removed in v4.0 of the AzureRM Provider - the replacement is available as `azurerm_portal_dashboard`.
 
 resource "azurerm_dashboard" "insights-dashboard" {
   name                = "my-cool-dashboard"
