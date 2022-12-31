@@ -23,7 +23,12 @@ jobs:
         shell: bash
 
     steps:
+    #install az commandline and check version
+    - uses: actions/setup-azure-cli@v1
+    - run: az --version
+
     # Checkout the repository to the GitHub Actions runner
+ 
     - name: Checkout
       uses: actions/checkout@v2
 
