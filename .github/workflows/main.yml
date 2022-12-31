@@ -24,7 +24,7 @@ jobs:
 
     steps:
     #install az commandline and check version
-    - uses: actions/setup-azure-cli@v1
+    - uses: Azure/CLI@v1
     - run: az --version
 
     # Checkout the repository to the GitHub Actions runner
