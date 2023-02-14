@@ -1,0 +1,47 @@
+name: Deploy Terraform to Azure
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Configure Azure CLI
+      uses: azure/setup-azure-cli@v1
+      with:
+        azure-cli-version: 2.0.79
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ env.ARM_CLIENT_ID }}/${{ env.ARM_TENANT_ID }}/${{ env.ARM_CLIENT_SECRET }}
+
+    - name: Configure Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform-version: latest
+
+    - name: Terraform Plan
+      run: terraform plan -out=tfplan
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve tfplan
+
+    - name: Terraform Destroy
+      if: always()
+      run: terraform destroy -auto-approve
+
+      
