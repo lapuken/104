@@ -6,7 +6,7 @@ on:
     - main
   pull_request:
   
-jobs:
+jobs:  
   terraform:
     name: 'Terraform'
     env:
@@ -22,3 +22,18 @@ jobs:
       #ARM_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
       #ARM_CONTAINER_NAME: ${{ secrets.AZURE_CONTAINER_NAME }}
     runs-on: ubuntu-latest
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-la
+    defaults:
+      run:
+        shell: bash
+  
+    steps:
+    # Checkout the repository to the GitHub Actions runner  
+
+    - name: Install Azure CLI
+      run: |
+            curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash -s -- -v 2.0.79
+
+
+    
