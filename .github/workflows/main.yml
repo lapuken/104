@@ -1,35 +1,24 @@
-  - name: Terraform-Init
-    uses: hashicorp/setup-terraform@v1
-    with:
-      terraform_version: '1.0.0'
-    env:
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-    run: |
-      terraform init -backend-config=backend.tfvars
+name: 'Terraform'
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
   
-  - name: Terraform-Plan
-    uses: hashicorp/setup-terraform@v1
-    with:
-      terraform_version: '1.0.0'
+jobs:
+  terraform:
+    name: 'Terraform'
     env:
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-    run: |
-      terraform plan -var-file=variables.tfvars
-  
-  - name: Terraform-Apply
-    uses: hashicorp/setup-terraform@v1
-    with:
-      terraform_version: '1.0.0'
-    env:
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-    run: |
-      terraform apply -var-file=variables.tfvars -auto-approve
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      #ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      #ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      #ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      #ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+      #ARM_RESOURCE_GROUP: ${{ secrets.AZURE_RESOURCE_GROUP }}
+      #ARM_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+      #ARM_CONTAINER_NAME: ${{ secrets.AZURE_CONTAINER_NAME }}
+    runs-on: ubuntu-latest
