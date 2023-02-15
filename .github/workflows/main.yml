@@ -1,23 +1,35 @@
-name: Deploy Azure Infrastructure with Terraform
-on:
-  push:
-    branches:
-      - main
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: "1.3.0"
-      - name: Terraform Init
-        run: terraform init
-      - name: Terraform Plan
-        id: terraform
-        run: terraform plan
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve
+  - name: Terraform-Init
+    uses: hashicorp/setup-terraform@v1
+    with:
+      terraform_version: '1.0.0'
+    env:
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+    run: |
+      terraform init -backend-config=backend.tfvars
+  
+  - name: Terraform-Plan
+    uses: hashicorp/setup-terraform@v1
+    with:
+      terraform_version: '1.0.0'
+    env:
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+    run: |
+      terraform plan -var-file=variables.tfvars
+  
+  - name: Terraform-Apply
+    uses: hashicorp/setup-terraform@v1
+    with:
+      terraform_version: '1.0.0'
+    env:
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+    run: |
+      terraform apply -var-file=variables.tfvars -auto-approve
