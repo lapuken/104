@@ -172,6 +172,9 @@ terraform.tfstate.backup
 .git
 output.tf
 remotestate-file 
+.github/workflows/main_bakayao.yml
+.github/workflows/23main_bakayao.yml
+.github/workflows/2342main_h.yml
 
 
 # JIRA plugin
