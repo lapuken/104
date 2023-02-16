@@ -48,5 +48,12 @@ jobs:
         tf_actions_subcommand: 'init'
         tf_actions_working_dir: "./terraform"
 
+    - name: List Azure resource groups
+      run: az group list --query '[].name'
+    
+    - name: List Azure container details
+      run: az storage container list --account-name tamopstfkhido --output table
+
+
 
     
