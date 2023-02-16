@@ -54,6 +54,9 @@ jobs:
     - name: List Azure container details
       run: az storage container list --account-name tamopstfkhido --output table
 
+    - name: List Azure resource groups
+      run: az group list
+
 
 
     
