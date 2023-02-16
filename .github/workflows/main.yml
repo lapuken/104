@@ -35,5 +35,8 @@ jobs:
       run: |
             curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash -s -- -v 2.0.79
 
+    - name: Checkout
+      uses: actions/checkout@v3
+
 
     
