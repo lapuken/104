@@ -16,7 +16,7 @@ terraform {
   }
 }
 
-# this is pretty chaotic, i hope at sometime all this will be normall
+# this is pretty chaotic, i hope at sometime all this will be normal
 # yeow
 
 provider "azuread" {}
