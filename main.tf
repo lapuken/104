@@ -19,6 +19,8 @@ terraform {
 # this is pretty chaotic, i hope at sometime all this will be normal
 # yeow
 
+
+
 provider "azuread" {}
 
 provider "azurerm" {
@@ -68,6 +70,7 @@ resource "azuread_group_member" "ADG_sys_Administrator" {
 
 data "azurerm_subscription" "primary" {}
 data "azurerm_subscription" "current" {}
+
 data "azurerm_management_group" "example" {
   display_name = "az104-02-mg1"
 }
@@ -121,17 +124,32 @@ resource "azurerm_role_assignment" "example_cloud" {
   role_definition_name = azurerm_role_definition.RoleDef_Support_Request.name
 }
 
-resource "azurerm_resource_group" "example" {
-  name     = "mygroup"
-  location = "East US"
+resource "azurerm_resource_group" "khimaRG" {
+  name     = "khimaRGroup"
+  location = var.location
 }
+
+resource "azurerm_log_analytics_workspace" "khimaRG" {
+  name                = "loga-01"
+  location            = azurerm_resource_group.khimaRG.location
+  resource_group_name = azurerm_resource_group.khimaRG.name
+  sku                 = "PerGB2018"
+  retention_in_days   = 30
+
+  tags = {
+    env = "prod"
+    costcentre = "corp"
+  }
+   
+}
+
 
 #The `azurerm_dashboard` resource is deprecated and will be removed in v4.0 of the AzureRM Provider - the replacement is available as `azurerm_portal_dashboard`.
 
 resource "azurerm_dashboard" "insights-dashboard" {
   name                = "my-cool-dashboard"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.khimaRG.name
+  location            = azurerm_resource_group.khimaRG.location
   tags = {
     source = "terraform"
   }
@@ -246,4 +264,5 @@ resource "azurerm_dashboard" "insights-dashboard" {
 }
 DASH
 }
+
 

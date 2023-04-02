@@ -30,7 +30,10 @@ variable "video_link" {
   default     = "https://www.youtube.com/watch?v=......"
 }
 
-
+variable "location" {
+  description = "The location where the resources will be deployed."
+  default     = "eastus"
+}
 
 
 
